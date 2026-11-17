@@ -1,35 +1,53 @@
 ﻿# Multi-Class Prediction of Obesity Risk (`Multi-Class-Prediction-of-Obesity-Risk`)
 
-A comprehensive multi-class machine learning pipeline (`multi-class-prediction-of-obesity-risk.ipynb`, 38 cells) benchmarking **6 classifiers** with **`GridSearchCV` hyperparameter tuning** across `train.csv` and `test.csv` to classify individuals into obesity risk categories.
+## Table of Contents
+- [Executive Summary & Business Utility](#executive-summary--business-utility)
+- [System Architecture & Layers](#system-architecture--layers)
+- [Data Model & Feature Schema](#data-model--feature-schema)
+- [Model Pipeline & Hyperparameter Tuning](#model-pipeline--hyperparameter-tuning)
+- [Getting Started](#getting-started)
+- [Business Value, ROI & Growth Opportunities](#business-value-roi--growth-opportunities)
 
 ---
 
-## 1. Executive Summary & Purpose
-`Multi-Class-Prediction-of-Obesity-Risk` implements an end-to-end tabular ML workflow—including feature encoding, feature scaling, multi-model benchmarking, and grid-search optimization—to predict multi-level health risk tiers from lifestyle and biometric attributes.
+## Executive Summary & Business Utility
+`Multi-Class-Prediction-of-Obesity-Risk` is a 38-cell end-to-end machine learning pipeline (`multi-class-prediction-of-obesity-risk.ipynb`) processing **20,758 training records** (`train.csv`) and **13,840 test records** (`test.csv`). It benchmarks **6 classification algorithms** paired with **`GridSearchCV` hyperparameter optimization** to stratify individuals into multi-class obesity risk tiers (`NObeyesdad`) based on biometric and lifestyle habits.
 
-## 2. Pipeline Architecture & Layers
+---
+
+## System Architecture & Layers
 ```mermaid
 flowchart LR
-    Data["train.csv & test.csv (Pandas)"] --> Prep["LabelEncoder + StandardScaler"]
-    Prep --> Tune["GridSearchCV Hyperparameter Tuning"]
-    Tune --> Models["LogisticRegression • RandomForest • GradientBoosting • GaussianNB • XGBoost • KNN"]
-    Models --> Eval["Multi-Class classification_report"]
+    L1["1. Ingestion (train.csv: 20,758 • test.csv: 13,840)"] --> L2["2. Transform Layer (LabelEncoder • StandardScaler)"]
+    L2 --> L3["3. GridSearchCV Tuning (6 Classifiers)"]
+    L3 --> L4["4. Multi-Class Evaluation (classification_report)"]
 ```
 
-| Layer | Tools & Methods |
+| Layer | Tools & Libraries |
 | :--- | :--- |
-| **Feature Engineering & Scaling** | `pandas`, `numpy`, `LabelEncoder`, `StandardScaler` |
-| **Model Selection & Tuning** | `GridSearchCV`, `train_test_split` |
+| **Feature Transformation** | `pandas`, `numpy`, `LabelEncoder`, `StandardScaler` |
+| **Tuning & Validation** | `train_test_split`, `GridSearchCV` |
 | **Benchmarked Algorithms** | `LogisticRegression`, `RandomForestClassifier`, `GradientBoostingClassifier`, `GaussianNB`, `XGBClassifier`, `KNeighborsClassifier` |
-| **Evaluation** | Per-class Precision, Recall, and F1 via `classification_report` |
+| **Evaluation** | Multi-class Precision, Recall, and F1 via `classification_report` |
 
-## 3. Getting Started
+---
+
+## Data Model & Feature Schema
+- **Training Set**: `train.csv` (**20,758 rows**, 18 columns including target `NObeyesdad`)
+- **Test Set**: `test.csv` (**13,840 rows**, 17 feature columns)
+- **Features**: `id`, `Gender`, `Age`, `Height`, `Weight`, `family_history_with_overweight`, `FAVC` (high-caloric food), `FCVC` (vegetable frequency), `NCP` (main meals), `CAEC` (snacking), `SMOKE`, `CH2O` (water intake), `SCC` (calorie monitoring), `FAF` (physical activity), `TUE` (tech use), `CALC` (alcohol), `MTRANS` (transportation)
+
+---
+
+## Getting Started
 ```bash
 git clone https://github.com/islamsamyy/Multi-Class-Prediction-of-Obesity-Risk.git
 cd Multi-Class-Prediction-of-Obesity-Risk
 jupyter notebook multi-class-prediction-of-obesity-risk.ipynb
 ```
 
-## 4. Business Value & Growth Opportunities
-- **Preventive Health & InsurTech Underwriting**: Enables digital health apps, wellness platforms, and insurance providers to stratify metabolic risk early and recommend personalized coaching plans.
-- **API & Mobile App Integration**: Export the top-tuned `XGBClassifier` / `GradientBoostingClassifier` artifact (`joblib`) behind a lightweight FastAPI service to power real-time consumer health assessments.
+---
+
+## Business Value, ROI & Growth Opportunities
+- **Digital Health & InsurTech Risk Stratification**: Enables wellness apps, corporate health programs, and insurers to segment metabolic risk early and trigger personalized coaching.
+- **Production Inference API**: Export the `GridSearchCV`-tuned `XGBClassifier` / `GradientBoostingClassifier` via `joblib` behind a FastAPI microservice to power real-time mobile health screenings.
